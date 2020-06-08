@@ -24,8 +24,8 @@ public class Incrementor implements IIncrementor {
 
     @Override
     public void incrementNumber() {
+        maximumValueLock.readLock().lock();
         try {
-            maximumValueLock.readLock().lock();
             number.getAndUpdate(number -> (number+1)%maximumValue);
         } finally {
             maximumValueLock.readLock().unlock();
@@ -35,8 +35,8 @@ public class Incrementor implements IIncrementor {
     @Override
     public void setMaximumValue(int maximumValue) {
         if(maximumValue < 0) throw new MaximumValueBelowZeroException();
+        maximumValueLock.writeLock().lock();
         try {
-            maximumValueLock.writeLock().lock();
             this.maximumValue = maximumValue;
             number.getAndUpdate(number -> number>=maximumValue ? 0 : number);
         } finally {
