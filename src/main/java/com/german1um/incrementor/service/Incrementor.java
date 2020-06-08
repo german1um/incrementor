@@ -1,5 +1,7 @@
 package com.german1um.incrementor.service;
 
+import com.german1um.incrementor.exception.MaximumValueBelowZeroException;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -32,7 +34,7 @@ public class Incrementor implements IIncrementor {
 
     @Override
     public void setMaximumValue(int maximumValue) {
-        if(maximumValue < 0) return;
+        if(maximumValue < 0) throw new MaximumValueBelowZeroException();
         try {
             maximumValueLock.writeLock().lock();
             this.maximumValue = maximumValue;

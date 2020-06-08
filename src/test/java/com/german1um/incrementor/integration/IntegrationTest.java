@@ -55,6 +55,13 @@ class IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("0"));
-
+        //When POST[/number/setMaximumValue] with body "10000000000000000000000000000000" Then status is BAD_REQUEST
+        this.mockMvc
+                .perform(post("/number/setMaximumValue").contentType(APPLICATION_JSON).content("10000000000000000000000000000000"))
+                .andExpect(status().isBadRequest());
+        //When POST[/number/setMaximumValue] with body "-100" Then status is BAD_REQUEST
+        this.mockMvc
+                .perform(post("/number/setMaximumValue").contentType(APPLICATION_JSON).content("-100"))
+                .andExpect(status().isBadRequest());
     }
 }

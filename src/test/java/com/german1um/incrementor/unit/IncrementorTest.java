@@ -1,11 +1,13 @@
 package com.german1um.incrementor.unit;
 
+import com.german1um.incrementor.exception.MaximumValueBelowZeroException;
 import com.german1um.incrementor.service.Incrementor;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IncrementorTest {
 
@@ -48,8 +50,7 @@ class IncrementorTest {
     @Test
     void setMaximumValueBelowZero() {
         Incrementor incrementor = new Incrementor(new AtomicInteger(9), 10);
-        incrementor.setMaximumValue(-100);
-        assertThat(incrementor.getMaximumValue(), is(10));
+        assertThrows(MaximumValueBelowZeroException.class, ()->incrementor.setMaximumValue(-100));
         assertThat(incrementor.getNumber(), is(9));
     }
 
